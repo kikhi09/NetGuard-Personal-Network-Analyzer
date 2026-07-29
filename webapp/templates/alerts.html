@@ -1,0 +1,59 @@
+{% extends "base.html" %}
+{% from "_states.html" import panel_state, pagination %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Explainable detection events</p><h2>Alerts</h2><p>Review alert context and recommendations. An alert is evidence to investigate, not proof of compromise.</p></div>
+</section>
+<section class="summary-grid summary-grid--compact">
+  <article class="metric-card"><span class="metric-card__label">Grouped incidents</span><strong class="metric-card__value" id="alert-row-total">—</strong><small>Related activity grouped together</small></article>
+  <article class="metric-card"><span class="metric-card__label">Occurrences</span><strong class="metric-card__value" id="alert-occurrence-total">—</strong><small>Repeated activity within incidents</small></article>
+  <article class="metric-card"><span class="metric-card__label">New</span><strong class="metric-card__value" id="alert-new-total">—</strong></article>
+  <article class="metric-card"><span class="metric-card__label">Acknowledged</span><strong class="metric-card__value" id="alert-ack-total">—</strong></article>
+  <article class="metric-card"><span class="metric-card__label">Resolved</span><strong class="metric-card__value" id="alert-resolved-total">—</strong></article>
+  <article class="metric-card"><span class="metric-card__label">Ignored</span><strong class="metric-card__value" id="alert-ignored-total">—</strong></article>
+  <article class="metric-card metric-card--danger"><span class="metric-card__label">Active High</span><strong class="metric-card__value" id="alert-high-total">—</strong><small>New or acknowledged</small></article>
+  <article class="metric-card metric-card--warning"><span class="metric-card__label">Active Medium</span><strong class="metric-card__value" id="alert-medium-total">—</strong><small>New or acknowledged</small></article>
+  <article class="metric-card"><span class="metric-card__label">Active Low</span><strong class="metric-card__value" id="alert-low-total">—</strong><small>New or acknowledged</small></article>
+</section>
+<section class="panel">
+  <form class="filter-bar" id="alert-filters">
+    <label>Severity<select id="alert-severity"><option value="">All severities</option><option>HIGH</option><option>MEDIUM</option><option>LOW</option></select></label>
+    <label>Detection rule<select id="alert-rule">
+      <option value="">All detection rules</option>
+      <option value="NG-PORT-SCAN">Port Scan</option>
+      <option value="NG-REPEATED-CONNECTIONS">Repeated Connection Attempts</option>
+      <option value="NG-HTTP-FLOOD">HTTP Request Flood</option>
+      <option value="NG-DNS-FLOOD">DNS Query Flood</option>
+      <option value="NG-TRAFFIC-SPIKE">Unusual Network Activity</option>
+      <option value="NG-HIGH-OUTBOUND">High Outbound Data Transfer</option>
+      <option value="NG-SUSPICIOUS-PORT">Suspicious Port Activity</option>
+    </select></label>
+    <label>Status<select id="alert-status"><option value="">All statuses</option><option value="new">New</option><option value="acknowledged">Acknowledged</option><option value="resolved">Resolved</option><option value="ignored">Ignored</option></select></label>
+    <label>Application / process<input id="alert-process" type="text" maxlength="100" placeholder="chrome.exe"></label>
+    <label>Page size<select id="alert-page-size"><option>10</option><option selected>25</option><option>50</option><option>100</option></select></label>
+    <div class="filter-actions"><button class="button button--primary button--small" type="submit">Apply filters</button><button class="button button--secondary button--small" id="alert-clear" type="button">Clear</button></div>
+  </form>
+  {{ panel_state("alerts", "Loading alerts…", "No alerts match the selected filters for the Current Session.") }}
+  <div class="table-wrap" id="alerts-content" hidden>
+    <table class="alerts-table"><thead><tr><th>Last activity</th><th>Severity</th><th>Incident</th><th>Application</th><th>Source</th><th>Destination</th><th>Occurrences</th><th>Status</th><th>Actions</th></tr></thead><tbody id="alerts-body"></tbody></table>
+  </div>
+  {{ pagination("alert-pagination") }}
+</section>
+
+<section class="panel detection-information" aria-labelledby="detects-heading">
+  <div class="panel__header"><div><p class="eyebrow">Basic rule-based detection</p><h2 id="detects-heading">What NetGuard Detects</h2></div></div>
+  <div class="rule-grid rule-grid--detection">
+    <article class="rule-card"><div><strong>Port Scan</strong><p>Multiple network ports are tested within a short period.</p></div></article>
+    <article class="rule-card"><div><strong>Repeated Connection Attempts</strong><p>Many repeated attempts are made to connect to the same network service.</p></div></article>
+    <article class="rule-card"><div><strong>HTTP Request Flood</strong><p>An unusually high number of clear-text HTTP requests is observed.</p></div></article>
+    <article class="rule-card"><div><strong>DNS Query Flood</strong><p>An unusually high number of DNS queries is observed.</p></div></article>
+    <article class="rule-card"><div><strong>Unusual Network Activity</strong><p>Network traffic rises significantly above its recent normal level.</p></div></article>
+    <article class="rule-card"><div><strong>High Outbound Data Transfer</strong><p>An unusually large amount of data leaves the monitored device.</p></div></article>
+    <article class="rule-card"><div><strong>Suspicious Port Activity</strong><p>Traffic uses ports commonly associated with risky or unusual tools.</p></div></article>
+  </div>
+  <div class="detection-disclaimer">
+    <strong>Basic rule-based detection</strong>
+    <p>NetGuard identifies unusual traffic patterns using predefined rules. An alert is evidence that should be reviewed, not proof that an attack occurred. Legitimate activities such as streaming, downloads, video calls, software updates and cloud synchronisation may sometimes trigger alerts. NetGuard cannot guarantee that every threat will be detected or that every alert is correct.</p>
+  </div>
+</section>
+{% endblock %}

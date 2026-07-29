@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+{% from "_states.html" import panel_state, pagination %}
+{% block content %}
+<section class="page-heading">
+  <div><p class="eyebrow">Normalized traffic metadata</p><h2>Live Packets</h2></div>
+  <div class="page-actions"><a class="button button--primary" id="packet-export" href="/reports">Current Session Reports</a></div>
+</section>
+<section class="context-strip">
+  <span><small>Capture</small><strong id="packet-capture-state">Checking…</strong></span>
+  <span><small>Adapter</small><strong id="packet-adapter">—</strong></span>
+  <span><small>Capture record</small><strong>Current Session</strong></span>
+</section>
+<section class="panel">
+  <form class="filter-bar" id="packet-filters">
+    <label>Direction<select id="packet-direction"><option value="">All directions</option><option>inbound</option><option>outbound</option><option>local</option><option>loopback</option><option>broadcast</option><option>multicast</option><option>unknown</option></select></label>
+    <label>Protocol<input id="packet-protocol" type="text" maxlength="32" placeholder="TCP, UDP, HTTPS…"></label>
+    <label>Page size<select id="packet-page-size"><option>10</option><option selected>25</option><option>50</option><option>100</option></select></label>
+    <div class="filter-actions"><button class="button button--primary button--small" type="submit">Apply filters</button><button class="button button--secondary button--small" id="packet-clear" type="button">Clear</button></div>
+  </form>
+  {{ panel_state("packets", "Loading packet records…", "No packet records match the selected filters.") }}
+  <div class="table-wrap" id="packets-content" hidden>
+    <table><thead><tr><th>Timestamp</th><th>Source IP</th><th>Src port</th><th>Destination IP</th><th>Dst port</th><th>Protocol</th><th>Size</th><th>Direction</th><th>IP version</th><th>TCP flags</th></tr></thead><tbody id="packets-body"></tbody></table>
+  </div>
+  {{ pagination("packet-pagination") }}
+</section>
+{% endblock %}

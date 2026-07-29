@@ -1,0 +1,24 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading"><div><h2>Reports & Exports</h2><p>Reports remain available after capture stops until a new capture begins or NetGuard closes.</p></div></section>
+<div class="dashboard-grid dashboard-grid--split">
+  <section class="panel">
+    <div class="panel__header"><div><h2>Current Session</h2></div></div>
+    <div class="session-preview" id="report-session-preview">
+      <p class="state-message">No current session data is available. Start a capture to create a report.</p>
+    </div>
+  </section>
+  <section class="panel">
+    <div class="panel__header"><div><h2>Current Session Report</h2></div></div>
+    <div class="download-actions">
+      <button class="download-card download-card--primary" id="download-report-pdf" type="button" disabled><span aria-hidden="true">▤</span><strong>Download Current Session Report</strong><small>A clear summary of traffic, applications, alerts, recommendations and technical details.</small></button>
+    </div>
+    <div class="panel__header report-advanced-heading"><div><p class="eyebrow">Advanced exports</p><h2>CSV metadata</h2></div></div>
+    <div class="download-actions">
+      <button class="download-card" id="download-packets-csv" type="button" disabled><span aria-hidden="true">⇩</span><strong>Export Packet Metadata CSV</strong><small>One readable row for every stored packet-metadata record.</small></button>
+      <button class="download-card" id="download-alerts-csv" type="button" disabled><span aria-hidden="true">⇩</span><strong>Export Alert Incidents CSV</strong><small>Grouped incidents with readable evidence, status and recommendations.</small></button>
+    </div>
+    <div class="progress-line" id="report-progress" aria-live="polite">No current session data is available. Start a capture to create a report.</div>
+  </section>
+</div>
+{% endblock %}

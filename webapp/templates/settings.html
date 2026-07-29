@@ -1,0 +1,12 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Browser preferences</p><h2>Settings</h2></div></section>
+<section class="panel settings-panel">
+  <div class="setting-row"><div><h3>Default Development Mode</h3><p>Preselect reduced thresholds on capture forms. Confirmation is still required.</p></div><input type="checkbox" id="setting-development-mode"></div>
+  <div class="setting-row"><div><h3>Polling interval</h3><p>Controls non-critical page refresh frequency between 1.5 and 10 seconds.</p></div><select id="setting-polling"><option value="1500">1.5 seconds</option><option value="2000">2 seconds</option><option value="3000">3 seconds</option><option value="5000">5 seconds</option><option value="10000">10 seconds</option></select></div>
+  <div class="setting-row"><div><h3>Packet table page size</h3><p>Default number of packet rows requested per page.</p></div><select id="setting-page-size"><option>10</option><option>25</option><option>50</option><option>100</option></select></div>
+  <div class="setting-row"><div><h3>Compact navigation</h3><p>Collapse the browser sidebar to icon-only mode.</p></div><input type="checkbox" id="setting-sidebar"></div>
+  <div class="button-row"><button class="button button--primary" id="settings-save" type="button">Save browser preferences</button><button class="button button--secondary" id="settings-reset" type="button">Reset defaults</button></div>
+  <p class="form-message" id="settings-message" aria-live="polite"></p>
+</section>
+{% endblock %}

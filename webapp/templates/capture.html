@@ -1,0 +1,48 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading">
+  <div><h2>Network Capture</h2></div>
+</section>
+<div class="dashboard-grid dashboard-grid--split">
+  <section class="panel capture-command-panel">
+    <div class="capture-orb capture-orb--unknown" id="capture-orb" aria-hidden="true"><span></span></div>
+    <h2 id="capture-page-state">Checking…</h2>
+    <p id="capture-readiness">Select an available adapter to begin.</p>
+    <p id="capture-page-error" class="form-message" aria-live="assertive"></p>
+    <label class="field field--full">Network adapter<select id="capture-adapter"><option value="">Loading adapters…</option></select></label>
+    <dl class="detail-grid" id="capture-adapter-details">
+      <div><dt>Name</dt><dd id="capture-adapter-name">—</dd></div>
+      <div><dt>Availability</dt><dd id="capture-adapter-availability">—</dd></div>
+      <div class="detail-grid__wide"><dt>Description</dt><dd id="capture-adapter-description">—</dd></div>
+      <div><dt>IPv4</dt><dd id="capture-adapter-ipv4">—</dd></div>
+      <div><dt>IPv6</dt><dd id="capture-adapter-ipv6-count">—</dd></div>
+    </dl>
+    <details class="advanced-details">
+      <summary>Advanced details</summary>
+      <dl class="detail-grid detail-grid--stacked">
+        <div><dt>IPv6 addresses</dt><dd id="capture-adapter-ipv6">—</dd></div>
+        <div><dt>Npcap capture ID</dt><dd class="copy-field"><code id="capture-page-interface">—</code><button class="icon-button" id="capture-copy-interface" type="button" aria-label="Copy Npcap capture identifier">⧉</button></dd></div>
+      </dl>
+    </details>
+    <label class="switch-row switch-row--boxed" for="capture-development-mode">
+      <span><strong>Development Mode</strong><small>Uses lower detection thresholds for safe testing.</small></span>
+      <input type="checkbox" id="capture-development-mode">
+    </label>
+    <div class="button-row button-row--center"><button class="button button--primary button--large" id="capture-start" type="button">Start Capture</button><button class="button button--danger button--large" id="capture-stop" type="button" disabled>Stop Capture</button></div>
+  </section>
+  <section class="panel">
+    <div class="panel__header"><div><h2>Current session</h2></div></div>
+    <strong class="capture-session-timer" id="capture-page-duration">0s</strong>
+    <p id="capture-quality-warning" class="callout callout--warning" hidden>Warning: Some packets were not processed.</p>
+    <dl class="detail-grid detail-grid--stacked">
+      <div><dt>Capture record</dt><dd>Current Session</dd></div>
+      <div><dt>Started</dt><dd id="capture-page-started">Not started</dd></div>
+      <div><dt>Packets</dt><dd id="capture-page-packets">—</dd></div>
+      <div><dt>Alerts</dt><dd id="capture-page-alerts">—</dd></div>
+      <div><dt>Dropped</dt><dd id="capture-page-dropped">—</dd></div>
+      <div><dt>Mode</dt><dd id="capture-page-mode">Normal</dd></div>
+      <div><dt>Adapter</dt><dd id="capture-page-adapter">—</dd></div>
+    </dl>
+  </section>
+</div>
+{% endblock %}

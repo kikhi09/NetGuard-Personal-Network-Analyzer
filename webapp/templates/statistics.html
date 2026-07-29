@@ -1,0 +1,15 @@
+{% extends "base.html" %}
+{% block content %}
+<section class="page-heading"><div><p class="eyebrow">Live measurements</p><h2>Statistics</h2></div></section>
+<p class="session-inline">Current Session</p>
+<section class="summary-grid summary-grid--compact">
+  <article class="metric-card"><span class="metric-card__label">Session packets</span><strong class="metric-card__value" id="statistics-packets">—</strong></article>
+  <article class="metric-card"><span class="metric-card__label">Packets / second</span><strong class="metric-card__value" id="statistics-pps">—</strong></article>
+  <article class="metric-card"><span class="metric-card__label">Dropped packets</span><strong class="metric-card__value" id="statistics-dropped">—</strong></article>
+</section>
+<div class="dashboard-grid dashboard-grid--charts">
+  <section class="panel"><div class="panel__header"><div><p class="eyebrow">Actual categories</p><h2>Protocol distribution</h2></div></div><div class="chart-layout"><div class="donut-chart chart-empty" id="statistics-protocol-chart" role="img"><span id="statistics-protocol-total">0</span></div><div class="chart-legend" id="statistics-protocol-legend"><p class="muted">Waiting for protocol data.</p></div></div></section>
+  <section class="panel"><div class="panel__header"><div><p class="eyebrow">Adapter-aware classes</p><h2>Direction distribution</h2></div></div><div class="chart-layout"><div class="donut-chart chart-empty" id="statistics-direction-chart" role="img"><span id="statistics-direction-total">0</span></div><div class="chart-legend" id="statistics-direction-legend"><p class="muted">Waiting for direction data.</p></div></div></section>
+</div>
+<section class="panel"><div class="panel__header"><div><p class="eyebrow">Traffic volume</p><h2>Traffic by direction</h2></div></div><div class="stat-list" id="statistics-direction-bytes"><p class="state-message">No direction byte counts are available.</p></div></section>
+{% endblock %}

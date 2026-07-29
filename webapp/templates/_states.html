@@ -1,0 +1,20 @@
+{% macro panel_state(id, loading_message="Loading local data…", empty_message="No data is available.") %}
+<div class="panel-state" id="{{ id }}-state" role="status">
+  <div class="state-message state-message--loading" data-state="loading">
+    <span class="spinner" aria-hidden="true"></span>
+    <span>{{ loading_message }}</span>
+  </div>
+  <div class="state-message" data-state="empty" hidden>{{ empty_message }}</div>
+  <div class="state-message state-message--error" data-state="error" hidden>
+    The local API is temporarily unavailable.
+  </div>
+</div>
+{% endmacro %}
+
+{% macro pagination(id) %}
+<nav class="pagination" id="{{ id }}" aria-label="Table pagination">
+  <button class="button button--secondary button--small" type="button" data-page-action="previous">Previous</button>
+  <span data-page-label>Page 1</span>
+  <button class="button button--secondary button--small" type="button" data-page-action="next">Next</button>
+</nav>
+{% endmacro %}

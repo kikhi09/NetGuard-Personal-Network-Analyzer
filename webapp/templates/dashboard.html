@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+{% from "_states.html" import panel_state %}
+{% block content %}
+<section class="page-heading">
+  <div>
+    <p class="eyebrow">Current monitoring session</p>
+    <h2>Network overview</h2>
+  </div>
+  <div class="page-actions">
+    <a class="button button--primary" href="/capture">Network Capture</a>
+  </div>
+</section>
+
+<section class="dashboard-hero dashboard-hero--primary" aria-label="Capture and safety summary">
+  <div class="dashboard-summary-stack">
+    <article class="metric-card metric-card--capture">
+      <div class="metric-card__label"><span>Capture status</span><span class="status-dot status-dot--unknown" id="summary-state-dot"></span></div>
+      <strong class="metric-card__value metric-card__value--text" id="summary-state">Loading…</strong>
+      <strong class="capture-timer" id="summary-duration">0s</strong>
+      <small><span id="summary-session">No current session</span> · <span id="summary-adapter">No adapter selected</span></small>
+    </article>
+    <article class="metric-card">
+      <span class="metric-card__label">Alerts</span>
+      <strong class="metric-card__value" id="summary-alerts">—</strong>
+      <small><span id="summary-unacknowledged">—</span> unacknowledged</small>
+    </article>
+    <article class="metric-card">
+      <span class="metric-card__label">Packets / second</span>
+      <strong class="metric-card__value" id="summary-pps">—</strong>
+    </article>
+  </div>
+
+  <article class="risk-card safety-card" id="safety-card">
+    <div class="risk-ring" id="safety-ring" role="meter" aria-label="Current session Safety Score" aria-valuemin="0" aria-valuemax="100" aria-valuenow="100">
+      <div class="risk-ring__centre">
+        <strong id="safety-percentage">100%</strong>
+        <span id="safety-status">No active risk detected</span>
+      </div>
+    </div>
+    <div class="risk-card__details">
+      <div class="metric-card__label"><span>Safety Score</span><span>Current session</span></div>
+      <p id="safety-explanation">Based on recent NetGuard detections; not a guarantee of security.</p>
+      <strong class="risk-count-heading">Active severity</strong>
+      <div class="risk-counts" aria-label="Current-session alerts by active severity">
+        <span><small>High</small><strong id="risk-high">0</strong></span>
+        <span><small>Medium</small><strong id="risk-medium">0</strong></span>
+        <span><small>Low</small><strong id="risk-low">0</strong></span>
+        <span><small>Info</small><strong id="risk-info">0</strong></span>
+      </div>
+      <strong class="risk-count-heading">Alert status</strong>
+      <div class="risk-counts risk-counts--lifecycle" aria-label="Current-session alert status counts">
+        <span><small>New</small><strong id="risk-new">0</strong></span>
+        <span><small>Acknowledged</small><strong id="risk-acknowledged">0</strong></span>
+        <span><small>Resolved</small><strong id="risk-resolved">0</strong></span>
+        <span><small>Ignored</small><strong id="risk-ignored">0</strong></span>
+      </div>
+      <small>Last updated: <time id="risk-updated">—</time></small>
+    </div>
+  </article>
+</section>
+
+<section class="panel panel--adapter" aria-labelledby="adapter-heading">
+  <div class="panel__header">
+    <div><p class="eyebrow">Capture source</p><h2 id="adapter-heading">Selected adapter</h2></div>
+    <a class="text-link" href="/capture">Open Network Capture</a>
+  </div>
+  {{ panel_state("dashboard-adapter", "Loading adapter information…", "No adapter is selected.") }}
+  <div class="adapter-summary" id="dashboard-adapter-content" hidden>
+    <div class="adapter-summary__mark" aria-hidden="true">⌁</div>
+    <div class="adapter-summary__main">
+      <div class="inline-heading"><h3 id="adapter-name">—</h3><span class="status-badge status-badge--unknown" id="adapter-status">Unknown</span></div>
+      <p id="adapter-description">—</p>
+      <dl class="detail-grid">
+        <div><dt>IPv4</dt><dd id="adapter-ipv4">—</dd></div>
+        <div><dt>IPv6</dt><dd id="adapter-ipv6">—</dd></div>
+      </dl>
+      <details class="advanced-details">
+        <summary>Advanced details</summary>
+        <dl class="detail-grid">
+          <div class="detail-grid__wide"><dt>Npcap capture ID</dt><dd class="copy-field"><code id="adapter-device" title="">—</code><button class="icon-button" id="copy-adapter" type="button" aria-label="Copy adapter identifier">⧉</button></dd></div>
+        </dl>
+      </details>
+    </div>
+  </div>
+</section>
+
+<div class="dashboard-grid dashboard-grid--split">
+  <section class="panel" aria-labelledby="recent-alerts-heading">
+    <div class="panel__header"><div><p class="eyebrow">Detection activity</p><h2 id="recent-alerts-heading">Recent alerts</h2></div><a class="text-link" href="/alerts">View all alerts</a></div>
+    {{ panel_state("dashboard-alerts", "Loading recent alerts…", "No active alerts.") }}
+    <div class="alert-list" id="dashboard-alert-list" hidden></div>
+  </section>
+
+  <section class="panel" aria-labelledby="quick-actions-heading">
+    <div class="panel__header"><div><p class="eyebrow">Common tasks</p><h2 id="quick-actions-heading">Quick actions</h2></div></div>
+    <div class="quick-actions">
+      <a class="quick-action" href="/reports"><span aria-hidden="true">▤</span><strong>Current Session Report</strong><small>Download a readable PDF summary</small></a>
+      <a class="quick-action" href="/reports"><span aria-hidden="true">⇩</span><strong>Advanced CSV exports</strong><small>Download packet metadata or alert incidents</small></a>
+    </div>
+  </section>
+</div>
+
+<section class="panel" aria-labelledby="live-packets-heading">
+  <div class="panel__header"><div><p class="eyebrow">Traffic metadata</p><h2 id="live-packets-heading">Live packets</h2></div><a class="text-link" href="/packets">Open Live Packets</a></div>
+  {{ panel_state("dashboard-packets", "Loading packet records…", "No packet records match the current session.") }}
+  <div class="table-wrap" id="dashboard-packets-content" hidden>
+    <table>
+      <thead><tr><th>Time</th><th>Source</th><th>Src port</th><th>Destination</th><th>Dst port</th><th>Protocol</th><th>Size</th><th>Direction</th><th>IP</th><th>TCP flags</th></tr></thead>
+      <tbody id="dashboard-packets-body"></tbody>
+    </table>
+  </div>
+</section>
+
+<div class="dashboard-grid dashboard-grid--charts">
+  <section class="panel" aria-labelledby="direction-chart-heading">
+    <div class="panel__header"><div><p class="eyebrow">Traffic classification</p><h2 id="direction-chart-heading">Traffic direction</h2></div></div>
+    <div class="chart-layout">
+      <div class="donut-chart chart-empty" id="direction-chart" role="img" aria-label="No direction data"><span id="direction-chart-total">0</span></div>
+      <div class="chart-legend" id="direction-legend"><p class="muted">No direction data is available.</p></div>
+    </div>
+  </section>
+  <section class="panel" aria-labelledby="protocol-chart-heading">
+    <div class="panel__header"><div><p class="eyebrow">Observed protocols</p><h2 id="protocol-chart-heading">Protocol distribution</h2></div></div>
+    <div class="chart-layout">
+      <div class="donut-chart chart-empty" id="protocol-chart" role="img" aria-label="No protocol data"><span id="protocol-chart-total">0</span></div>
+      <div class="chart-legend" id="protocol-legend"><p class="muted">No protocol data is available.</p></div>
+    </div>
+  </section>
+</div>
+
+<section class="panel" aria-labelledby="live-statistics-heading">
+  <div class="panel__header"><div><p class="eyebrow">Current activity</p><h2 id="live-statistics-heading">Live statistics</h2></div></div>
+  <div class="stat-strip">
+    <div><small>Session packets</small><strong id="stat-total-packets">—</strong></div>
+    <div><small>Packets / second</small><strong id="stat-pps">—</strong></div>
+    <div><small>Incoming bytes</small><strong id="stat-inbound-bytes">—</strong></div>
+    <div><small>Outgoing bytes</small><strong id="stat-outbound-bytes">—</strong></div>
+    <div><small>Total alerts</small><strong id="stat-alerts">—</strong></div>
+    <div><small>Dropped</small><strong id="stat-dropped">—</strong></div>
+  </div>
+</section>
+
+{% endblock %}
