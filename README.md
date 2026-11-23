@@ -243,6 +243,9 @@ monitor other people without clear permission.
 - Dropped packets: reduce traffic, close expensive applications, or treat the
   session totals as incomplete.
 
+  ## Problem Statement
+Monitoring local network activity and spotting unusual traffic patterns on Windows often involves heavy enterprise tools or raw packet captures that retain sensitive payload data. NetGuard provides a lightweight, current-session-only local dashboard that inspects packet metadata, applies explainable rule-based checks, and clears runtime session data on exit.
+
 ## Future improvements
 
 Possible student-project extensions include authenticated remote deployment,
